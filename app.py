@@ -1,11 +1,8 @@
 import streamlit as st
 import openai
-import toml
 
-# Load the configuration for OpenAI API key
-#config = toml.load(".streamlit/config.toml")
-config = toml.load("config.toml")
-openai_api_key = config["openai"]["api_key"]
+# OpenAI API key stored in Streamlit secrets
+openai_api_key = st.secrets["openai_api_key"]
 
 # Set the OpenAI key
 openai.api_key = openai_api_key
@@ -19,7 +16,7 @@ if st.button("Send"):
     # Ensure the user has typed something
     if user_input:
         try:
-            # Send the message to OpenAI's API using the new method
+            # Send the message to OpenAI's API
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "system", "content": "You are a helpful assistant."},
@@ -32,4 +29,5 @@ if st.button("Send"):
             st.error(f"An error occurred: {e}")
     else:
         st.warning("Please type a message.")
+
 
